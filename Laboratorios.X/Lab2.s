@@ -7,7 +7,7 @@
 ; Hardware: Leds en el puerto A, C, D. PushBotons en el puerto B. 
 ;
 ;Creado: 9 feb, 2021
-;Ultima Modificacion: 11 feb, 2021
+;Ultima Modificacion: 12 feb, 2021
     
 PROCESSOR 16F887
 
@@ -53,16 +53,16 @@ main:
     
     banksel TRISA  
     movlw 0F0h
-    movwf TRISA	
+    movwf TRISA	; colocar portA como salidas
     
     movlw 01Fh
-    movwf TRISB
+    movwf TRISB ; colocar portB como entradas
     
     movlw 0F0h
-    movwf TRISC
+    movwf TRISC  ; colocar portC como salidas
     
     movlw 0E0h
-    movwf TRISD
+    movwf TRISD  ; colocar portD como salidas
     
     
     banksel PORTA
@@ -75,52 +75,52 @@ main:
 ;-----------loop general------------    
 loop: 
     btfsc PORTB, 0   ; si el boton de incrementar para el contador 1 entonces
-    call  sumcont_1
+    call  sumcont_1  ; llamar a sub rutina para incrementar 1
     btfsc PORTB, 1   ; si el boton de decrementar para el contador 1 entonces
-    call  rescont_1
+    call  rescont_1  ; llamar a sub rutina para decrementar 1
     
     btfsc PORTB,2   ; si el boton de incrementar para el contador 2 entonces
-    call sumcont_2
+    call sumcont_2  ; llamar a sub rutina para incrementar contador 2
     btfsc PORTB,3   ; si el boton de decrementar para el contador 2 entonces
-    call rescont_2
+    call rescont_2  ; llamar a sub rutina para decrementar contador 2
     
     btfsc PORTB,4   ; si el boton de suma entonces
-    call suma_J
+    call suma_J     ; llamar a sub rutina para hacer la sumatoria
     
     goto loop ;loop forever
     
  ;-----------SUB RUTINAS------------     
 sumcont_1:
-    btfsc PORTB, 0
+    btfsc PORTB, 0  ; Cuando se active el primer bit en esta caso PB1
     goto  $-1		; ejecutar una linea atras
-    incf  PORTA, 1
+    incf  PORTA, 1	; Incrementar en el contador 1
     return
     
 rescont_1: 
-    btfsc PORTB, 1
+    btfsc PORTB, 1  ; Cuando se active el segundo bit en esta caso PB2
     goto  $-1		; ejecutar una linea atras
-    decf  PORTA, 1
+    decf  PORTA, 1  ; decrementar el contador 1
     return
 
 sumcont_2:
-    btfsc PORTB, 2
+    btfsc PORTB, 2  ; Cuando se active el tercer bit en esta caso PB3
     goto  $-1		; ejecutar una linea atras
-    incf  PORTC, 1
+    incf  PORTC, 1  ; incrementar en el contador 2
     return
     
 rescont_2: 
-    btfsc   PORTB, 3
+    btfsc   PORTB, 3	; Cuando se active el cuarto bit en esta caso PB4
     goto    $-1		; ejecutar una linea atras
-    decfsz  PORTC, 1
+    decfsz  PORTC, 1	; decrementar en el contador 2
     return
 ;-----------------suma-------------------------
 suma_J: 
-    btfsc   PORTB, 4
+    btfsc   PORTB, 4	; Cuando se active el quinto bit en esta caso PB5
     goto    $-1	
     
-    movf    PORTA,0
-    addwf   PORTC,0
-    movwf   PORTD
+    movf    PORTA,0	 ; Colocar el valor del primer contador en w
+    addwf   PORTC,0	 ; Sumar el valor del segundo contador en w
+    movwf   PORTD	 ; Mover w al puerto D, en este caso los leds
     return
 
     
