@@ -7,7 +7,7 @@
 ; Hardware: Leds en el puerto C, D. PushBotons en el puerto B, 7 segmentos en el puerto D.
  ;
 ;Creado: 16 feb, 2021
-;Ultima Modificacion: 19 feb, 2021
+;Ultima Modificacion: 20 feb, 2021
     
 PROCESSOR 16F887
 
