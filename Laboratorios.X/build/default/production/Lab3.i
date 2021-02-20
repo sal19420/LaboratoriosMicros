@@ -1,16 +1,16 @@
-# 1 "Lab2.s"
+# 1 "Lab3.s"
 # 1 "<built-in>" 1
-# 1 "Lab2.s" 2
-;Archivo: Lab2.1.s
+# 1 "Lab3.s" 2
+;Archivo: Lab3.s
 ;Dispositivo: PIC16F887
 ;Autor: Josue Salazar
 ; Compilador: pic-as (v2.31), MPLABX v5.45
 ;
-; Programa: contador en el puerto A
-; Hardware: Leds en el puerto A, C, D. PushBotons en el puerto B.
-;
-;Creado: 9 feb, 2021
-;Ultima Modificacion: 12 feb, 2021
+; Programa: Timer0, contador y alerta
+; Hardware: Leds en el puerto C, D. PushBotons en el puerto B, 7 segmentos en el puerto D.
+ ;
+;Creado: 16 feb, 2021
+;Ultima Modificacion: 19 feb, 2021
 
 PROCESSOR 16F887
 
@@ -2460,10 +2460,10 @@ stk_offset SET 0
 auto_size SET 0
 ENDM
 # 7 "C:\\Program Files\\Microchip\\xc8\\v2.31\\pic\\include\\xc.inc" 2 3
-# 15 "Lab2.s" 2
+# 15 "Lab3.s" 2
 
 ; CONFIG1
-  CONFIG FOSC = EXTRC_CLKOUT ; Oscillator Selection bits (INTOSCIO oscillator: I/O function on ((PORTA) and 07Fh), 6/OSC2/CLKOUT pin, I/O function on ((PORTA) and 07Fh), 7/OSC1/CLKIN)
+  CONFIG FOSC = INTRC_NOCLKOUT ; Oscillator Selection bits (INTOSCIO oscillator: I/O function on ((PORTA) and 07Fh), 6/OSC2/CLKOUT pin, I/O function on ((PORTA) and 07Fh), 7/OSC1/CLKIN)
   CONFIG WDTE = OFF ; Watchdog Timer Enable bit (WDT disabled and can be enabled by ((WDTCON) and 07Fh), 0 bit of the WDTCON register)
   CONFIG PWRTE = ON ; Power-up Timer Enable bit (PWRT enabled)
   CONFIG MCLRE = OFF ; ((PORTE) and 07Fh), 3/MCLR pin function select bit (((PORTE) and 07Fh), 3/MCLR pin function is digital input, MCLR internally tied to VDD)
@@ -2477,99 +2477,152 @@ ENDM
 ; CONFIG2
   CONFIG BOR4V = BOR40V ; Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
   CONFIG WRT = OFF ; Flash Program Memory Self Write Enable bits (Write protection off)
+PSECT udata_shr ;comoon memory
+    cont: DS 2 ; 2 byte
 
-PSECT udata_bank0 ;common memory
-  cont_1: DS 1;1byte
-  cont_2: DS 1
-  dcont_1: DS 1
-  dcont_2: DS 1
-  sumat_J: DS 1
+  PSECT resVect, class=CODE, abs, delta=2
+  ;--------------vector reset---------------------------------------------------
+  ORG 00h ;posicion 0000h para el reset
+  resetVec:
+      PAGESEL main
+      goto main
 
-PSECT resVect, class=CODE, abs, delta=2
-;-----------vector reset---------
-ORG 00h
-resetVec:
-    PAGESEL main
-    goto main
+  PSECT code, delta=2, abs
+  ORG 100h ; posicion para el codigo
+  tabla:
+    clrf PCLATH
+    bsf PCLATH,0 ; PCLATH = 01
+    andlw 0x0f
+    addwf PCL
+    retlw 00111111B ;0
+    retlw 00000110B ;1
+    retlw 01011011B ;2
+    retlw 01001111B ;3
+    retlw 01100110B ;4
+    retlw 01101101B ;5
+    retlw 01111101B ;6
+    retlw 00000111B ;7
+    retlw 01111111B ;8
+    retlw 01101111B ;9
+    retlw 01110111B ;A
+    retlw 01111100B ;B
+    retlw 00111001B ;C
+    retlw 01011110B ;D
+    retlw 01111001B ;E
+    retlw 01110001B ;F
 
-PSECT code, delta=2, abs
-ORG 100h ;posicion pare el codigo
-;-----------configuracion------------
+
+
+  ;------------configuracion----------------------------------------------------
 main:
-    banksel ANSEL ;banco 11
-    clrf ANSEL ;PINES DIGITALES I/O
-    clrf ANSELH
+    call io
+    call conclock
+    call contimer
+    banksel PORTA
+
+
+    ;----------loop principal---------------------------------------------------
+loop:
+    btfss ((INTCON) and 07Fh), 2
+    goto $-1
+    call reiniciarT0
+    incf PORTC,1
+
+    btfsc PORTB, 0 ; si el boton de incrementar para el contador 1 entonces
+    call sumcont_1
+
+    btfsc PORTB, 1 ; si el boton de decrementar para el contador 1 entonces
+    call rescont_1 ; llamar a sub rutina para decrementar 1
+
+    bcf PORTE,0
+    call alarma
+
+    goto loop
+  ;-------------------------sub rutinas-----------------------------------------
+
+
+io:
+     banksel ANSEL
+     clrf ANSEL
+     clrf ANSELH
 
     banksel TRISA
-    movlw 0F0h
-    movwf TRISA ; colocar portA como salidas
 
-    movlw 01Fh
+    movlw 002h
     movwf TRISB ; colocar portB como entradas
 
     movlw 0F0h
     movwf TRISC ; colocar portC como salidas
 
-    movlw 0E0h
-    movwf TRISD ; colocar portD como salidas
 
+    clrf TRISD ; colocar portD como salidas
+
+    movlw 0FEh
+    movwf TRISE
 
     banksel PORTA
-    clrf PORTA
     clrf PORTB
     clrf PORTC
     clrf PORTD
+    clrf PORTE
+    return
 
+conclock:
+    banksel OSCCON
+    bsf ((OSCCON) and 07Fh), 4
+    bsf ((OSCCON) and 07Fh), 5
+    bcf ((OSCCON) and 07Fh), 6
+    bsf ((OSCCON) and 07Fh), 0 ; habilitar reloj interno
 
-;-----------loop general------------
-loop:
-    btfsc PORTB, 0 ; si el boton de incrementar para el contador 1 entonces
-    call sumcont_1 ; llamar a sub rutina para incrementar 1
-    btfsc PORTB, 1 ; si el boton de decrementar para el contador 1 entonces
-    call rescont_1 ; llamar a sub rutina para decrementar 1
+    return
 
-    btfsc PORTB,2 ; si el boton de incrementar para el contador 2 entonces
-    call sumcont_2 ; llamar a sub rutina para incrementar contador 2
-    btfsc PORTB,3 ; si el boton de decrementar para el contador 2 entonces
-    call rescont_2 ; llamar a sub rutina para decrementar contador 2
+contimer:
+    banksel TRISA
+    bcf ((OPTION_REG) and 07Fh), 5 ;RELOJ interno
+    bcf ((OPTION_REG) and 07Fh), 3 ; PRESCALER, se asigna al timer0
+    bsf ((OPTION_REG) and 07Fh), 2
+    bsf ((OPTION_REG) and 07Fh), 1
+    bsf ((OPTION_REG) and 07Fh), 0; PS=111, velocidad de seleccion
+    banksel PORTA
+    call reiniciarT0
+    return
 
-    btfsc PORTB,4 ; si el boton de suma entonces
-    call suma_J ; llamar a sub rutina para hacer la sumatoria
+reiniciarT0:
+    movlw 12
+    movwf TMR0
+    bcf ((INTCON) and 07Fh), 2
+    return
 
-    goto loop ;loop forever
-
- ;-----------SUB RUTINAS------------
 sumcont_1:
     btfsc PORTB, 0 ; Cuando se active el primer bit en esta caso PB1
     goto $-1 ; ejecutar una linea atras
-    incf PORTA, 1 ; Incrementar en el contador 1
+    incf cont ; Incrementar en el contador 1
+    movf cont, 0
+    call tabla
+    movwf PORTD, 1
     return
 
 rescont_1:
     btfsc PORTB, 1 ; Cuando se active el segundo bit en esta caso PB2
     goto $-1 ; ejecutar una linea atras
-    decf PORTA, 1 ; decrementar el contador 1
+    decf cont ; decrementar el contador 1
+    movf cont, 0
+    call tabla
+    movwf PORTD, 1
     return
 
-sumcont_2:
-    btfsc PORTB, 2 ; Cuando se active el tercer bit en esta caso PB3
-    goto $-1 ; ejecutar una linea atras
-    incf PORTC, 1 ; incrementar en el contador 2
+
+alarma:
+    movf cont,0
+    subwf PORTC,0
+    btfsc STATUS,2
+    call alarmaenc
     return
 
-rescont_2:
-    btfsc PORTB, 3 ; Cuando se active el cuarto bit en esta caso PB4
-    goto $-1 ; ejecutar una linea atras
-    decfsz PORTC, 1 ; decrementar en el contador 2
-    return
-;-----------------suma-------------------------
-suma_J:
-    btfsc PORTB, 4 ; Cuando se active el quinto bit en esta caso PB5
-    goto $-1
 
-    movf PORTA,0 ; Colocar el valor del primer contador en w
-    addwf PORTC,0 ; Sumar el valor del segundo contador en w
-    movwf PORTD ; Mover w al puerto D, en este caso los leds
+alarmaenc:
+    bsf PORTE,0
+    clrf PORTC
     return
 
 
