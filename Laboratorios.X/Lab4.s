@@ -7,7 +7,7 @@
 ; Hardware: Leds en el puerto A. PushBotons en el puerto B, 7 segmentos en el puerto D y C
 ;
 ;Creado: 23 feb, 2021
-;Ultima Modificacion:  26 feb, 2021
+;Ultima Modificacion:  27 feb, 2021
     
 PROCESSOR 16F887
 
@@ -54,10 +54,10 @@ PSECT intVect, class=CODE, abs, delta=2
     
  isr:
     btfsc   RBIF	    ; revisar bandera 
-    call    INTIOCB
+    call    INTIOCB	    ;Interrupt onchange Port b
     
     btfsc   T0IF	    ; revisar bandera de Timer0
-    call    inttimer
+    call    inttimer	    ;interrupcion del timer
     
     
     
@@ -70,18 +70,19 @@ pop:
     retfie
 ;-------------------------sub rutinas INT-----------------------------------------
 INTIOCB: 
-    banksel PORTA
+    banksel PORTA	    ; revisar botones e incrementar si se suelta 
     btfss   PORTB,0
     incf    PORTA
     
     btfss   PORTB, 1
     decf    PORTA
     
-    bcf	    RBIF
+    bcf	    RBIF	    ; limpiar la bandera, pare reiniciar el conteo
     return
+  
 inttimer:
     banksel PORTA   
-    incf    cont
+    incf    cont	    ; si la bandera del timer0 es 1 entonces incrementar
     call    reiniciarT0
     return
     

@@ -2503,10 +2503,10 @@ PSECT intVect, class=CODE, abs, delta=2
 
  isr:
     btfsc ((INTCON) and 07Fh), 0 ; revisar bandera
-    call INTIOCB
+    call INTIOCB ;Interrupt onchange Port b
 
     btfsc ((INTCON) and 07Fh), 2 ; revisar bandera de Timer0
-    call inttimer
+    call inttimer ;interrupcion del timer
 
 
 
@@ -2519,18 +2519,19 @@ pop:
     retfie
 ;-------------------------sub rutinas INT-----------------------------------------
 INTIOCB:
-    banksel PORTA
+    banksel PORTA ; revisar botones e incrementar si se suelta
     btfss PORTB,0
     incf PORTA
 
     btfss PORTB, 1
     decf PORTA
 
-    bcf ((INTCON) and 07Fh), 0
+    bcf ((INTCON) and 07Fh), 0 ; limpiar la bandera, pare reiniciar el conteo
     return
+
 inttimer:
     banksel PORTA
-    incf cont
+    incf cont ; si la bandera del timer0 es 1 entonces incrementar
     call reiniciarT0
     return
 
