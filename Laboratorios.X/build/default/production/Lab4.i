@@ -1,16 +1,16 @@
-# 1 "Lab3.s"
+# 1 "Lab4.s"
 # 1 "<built-in>" 1
-# 1 "Lab3.s" 2
-;Archivo: Lab3.s
+# 1 "Lab4.s" 2
+;Archivo: Lab4.s
 ;Dispositivo: PIC16F887
 ;Autor: Josue Salazar
 ; Compilador: pic-as (v2.31), MPLABX v5.45
 ;
-; Programa: Timer0, contador y alerta
-; Hardware: Leds en el puerto C, D. PushBotons en el puerto B, 7 segmentos en el puerto D.
- ;
-;Creado: 16 feb, 2021
-;Ultima Modificacion: 20 feb, 2021
+; Programa: Interrupciones en el Puerto B
+; Hardware: Leds en el puerto A. PushBotons en el puerto B, 7 segmentos en el puerto D y C
+;
+;Creado: 23 feb, 2021
+;Ultima Modificacion: 26 feb, 2021
 
 PROCESSOR 16F887
 
@@ -2460,7 +2460,7 @@ stk_offset SET 0
 auto_size SET 0
 ENDM
 # 7 "C:\\Program Files\\Microchip\\xc8\\v2.31\\pic\\include\\xc.inc" 2 3
-# 15 "Lab3.s" 2
+# 15 "Lab4.s" 2
 
 ; CONFIG1
   CONFIG FOSC = INTRC_NOCLKOUT ; Oscillator Selection bits (INTOSCIO oscillator: I/O function on ((PORTA) and 07Fh), 6/OSC2/CLKOUT pin, I/O function on ((PORTA) and 07Fh), 7/OSC1/CLKIN)
@@ -2477,8 +2477,14 @@ ENDM
 ; CONFIG2
   CONFIG BOR4V = BOR40V ; Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
   CONFIG WRT = OFF ; Flash Program Memory Self Write Enable bits (Write protection off)
+
+
 PSECT udata_shr ;comoon memory
     cont: DS 2 ; 2 byte
+    W_TEM: DS 1
+    ESTATUS: DS 1
+    dise: DS 1
+
 
   PSECT resVect, class=CODE, abs, delta=2
   ;--------------vector reset---------------------------------------------------
@@ -2486,9 +2492,50 @@ PSECT udata_shr ;comoon memory
   resetVec:
       PAGESEL main
       goto main
+PSECT intVect, class=CODE, abs, delta=2
+;--------------vector interrupcion---------------------------------------------------
+ ORG 04h
+
+ push:
+    movwf W_TEM ; guardar valores en status
+    swapf STATUS, W
+    movwf ESTATUS
+
+ isr:
+    btfsc ((INTCON) and 07Fh), 0 ; revisar bandera
+    call INTIOCB
+
+    btfsc ((INTCON) and 07Fh), 2 ; revisar bandera de Timer0
+    call inttimer
+
+
+
+
+pop:
+    swapf ESTATUS, W
+    movwf STATUS
+    swapf W_TEM, F
+    swapf W_TEM, W
+    retfie
+;-------------------------sub rutinas INT-----------------------------------------
+INTIOCB:
+    banksel PORTA
+    btfss PORTB,0
+    incf PORTA
+
+    btfss PORTB, 1
+    decf PORTA
+
+    bcf ((INTCON) and 07Fh), 0
+    return
+inttimer:
+    banksel PORTA
+    incf cont
+    call reiniciarT0
+    return
 
   PSECT code, delta=2, abs
-  ORG 100h ; posicion para el codigo
+  ORG 100h ; posicion para la tabla
   tabla:
     clrf PCLATH
     bsf PCLATH,0 ; PCLATH = 01
@@ -2518,28 +2565,28 @@ main:
     call io
     call conclock
     call contimer
+    call coninten
+    call coniocb
+
     banksel PORTA
 
 
     ;----------loop principal---------------------------------------------------
 loop:
-    btfss ((INTCON) and 07Fh), 2
-    goto $-1
-    call reiniciarT0
-    incf PORTC,1
-
-    btfsc PORTB, 0 ; si el boton de incrementar para el contador 1 entonces
-    call sumcont_1
-
-    btfsc PORTB, 1 ; si el boton de decrementar para el contador 1 entonces
-    call rescont_1 ; llamar a sub rutina para decrementar 1
-
-    bcf PORTE,0
-    call alarma
-
+    call dison ; subrutina para copiar leds en 7seg
+    call delay_1s ; delay del timer0 en 1s= 1000ms
     goto loop
   ;-------------------------sub rutinas-----------------------------------------
+coniocb:
+    banksel TRISA
+    bsf IOCB, 0 ; HABILITAR INT EN EL PORT B
+    bsf IOCB, 1
 
+    banksel PORTA
+    movf PORTB, W
+    bcf ((INTCON) and 07Fh), 0
+
+    return
 
 io:
      banksel ANSEL
@@ -2547,33 +2594,25 @@ io:
      clrf ANSELH
 
     banksel TRISA
+    movlw 0F0h
+    movwf TRISA ; salidas para leds
 
-    movlw 002h
+    movlw 003h
     movwf TRISB ; colocar portB como entradas
 
-    movlw 0F0h
-    movwf TRISC ; colocar portC como salidas
-
+    clrf TRISC ; colocar portC como salidas
 
     clrf TRISD ; colocar portD como salidas
 
-    movlw 0FEh
-    movwf TRISE
+    bcf OPTION_REG, 7 ; HABILITAR PULL UP
+    bsf WPUB, 0
+    bsf WPUB, 1
 
     banksel PORTA
+    clrf PORTA
     clrf PORTB
     clrf PORTC
     clrf PORTD
-    clrf PORTE
-    return
-
-conclock:
-    banksel OSCCON
-    bsf ((OSCCON) and 07Fh), 4
-    bsf ((OSCCON) and 07Fh), 5
-    bcf ((OSCCON) and 07Fh), 6
-    bsf ((OSCCON) and 07Fh), 0 ; habilitar reloj interno
-
     return
 
 contimer:
@@ -2588,41 +2627,44 @@ contimer:
     return
 
 reiniciarT0:
-    movlw 12
+    movlw 178 ; valor inicial/ delay suficiente
     movwf TMR0
     bcf ((INTCON) and 07Fh), 2
     return
 
-sumcont_1:
-    btfsc PORTB, 0 ; Cuando se active el primer bit en esta caso PB1
-    goto $-1 ; ejecutar una linea atras
-    incf cont ; Incrementar en el contador 1
-    movf cont, 0
+delay_1s:
+    movlw 100
+    subwf cont, W
+    btfss STATUS, 2
+    return
+    incf dise
+    movf dise, W
     call tabla
-    movwf PORTD, 1
+    movwf PORTD
+    clrf cont
     return
 
-rescont_1:
-    btfsc PORTB, 1 ; Cuando se active el segundo bit en esta caso PB2
-    goto $-1 ; ejecutar una linea atras
-    decf cont ; decrementar el contador 1
-    movf cont, 0
+conclock:
+    banksel OSCCON
+    bsf ((OSCCON) and 07Fh), 4
+    bsf ((OSCCON) and 07Fh), 5
+    bsf ((OSCCON) and 07Fh), 6
+    bsf ((OSCCON) and 07Fh), 0 ; habilitar reloj interno
+
+    return
+
+coninten:
+    banksel PORTA
+    bsf ((INTCON) and 07Fh), 7 ; INTCON
+    bsf ((INTCON) and 07Fh), 3 ; habilitar interrupcion
+    bcf ((INTCON) and 07Fh), 0 ; cambio en la bandera
+    bsf ((INTCON) and 07Fh), 5
+    bcf ((INTCON) and 07Fh), 2
+    return
+dison:
+    movf PORTA, W
     call tabla
-    movwf PORTD, 1
-    return
-
-
-alarma:
-    movf cont,0
-    subwf PORTC,0
-    btfsc STATUS,2
-    call alarmaenc
-    return
-
-
-alarmaenc:
-    bsf PORTE,0
-    clrf PORTC
+    movwf PORTC, F
     return
 
 
