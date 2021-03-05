@@ -1,16 +1,16 @@
-# 1 "Lab4.s"
+# 1 "Lab5.s"
 # 1 "<built-in>" 1
-# 1 "Lab4.s" 2
-;Archivo: Lab4.s
+# 1 "Lab5.s" 2
+;Archivo: Lab5.s
 ;Dispositivo: PIC16F887
 ;Autor: Josue Salazar
 ; Compilador: pic-as (v2.31), MPLABX v5.45
 ;
-; Programa: Interrupciones en el Puerto B
+; Programa: Displays simultaneos
 ; Hardware: Leds en el puerto A. PushBotons en el puerto B, 7 segmentos en el puerto D y C
 ;
-;Creado: 23 feb, 2021
-;Ultima Modificacion: 26 feb, 2021
+;Creado: 2 mar, 2021
+;Ultima Modificacion: mar, 2021
 
 PROCESSOR 16F887
 
@@ -2460,7 +2460,7 @@ stk_offset SET 0
 auto_size SET 0
 ENDM
 # 7 "C:\\Program Files\\Microchip\\xc8\\v2.31\\pic\\include\\xc.inc" 2 3
-# 15 "Lab4.s" 2
+# 15 "Lab5.s" 2
 
 ; CONFIG1
   CONFIG FOSC = INTRC_NOCLKOUT ; Oscillator Selection bits (INTOSCIO oscillator: I/O function on ((PORTA) and 07Fh), 6/OSC2/CLKOUT pin, I/O function on ((PORTA) and 07Fh), 7/OSC1/CLKIN)
@@ -2477,13 +2477,28 @@ ENDM
 ; CONFIG2
   CONFIG BOR4V = BOR40V ; Brown-out Reset Selection bit (Brown-out Reset set to 4.0V)
   CONFIG WRT = OFF ; Flash Program Memory Self Write Enable bits (Write protection off)
+;--------------macros---------------------------------------------------
 
+reiniciarT0 macro
+    banksel PORTA
+    movlw 178 ; valor inicial/ delay suficiente
+    movwf TMR0
+    bcf ((INTCON) and 07Fh), 2
+    endm
 
 PSECT udata_shr ;comoon memory
-    cont: DS 2 ; 2 byte
     W_TEM: DS 1
     ESTATUS: DS 1
-    dise: DS 1
+    cont: DS 1
+PSECT udata_bank0
+    var: DS 1
+    banderas: DS 1
+    nibbles: DS 2
+    UNI: DS 1
+    DECE: DS 1
+    CEN: DS 1
+    dise: DS 8
+    verif: DS 3
 
 
   PSECT resVect, class=CODE, abs, delta=2
@@ -2508,9 +2523,6 @@ PSECT intVect, class=CODE, abs, delta=2
     btfsc ((INTCON) and 07Fh), 2 ; revisar bandera de Timer0
     call inttimer ;interrupcion del timer
 
-
-
-
 pop:
     swapf ESTATUS, W
     movwf STATUS
@@ -2520,20 +2532,97 @@ pop:
 ;-------------------------sub rutinas INT-----------------------------------------
 INTIOCB:
     banksel PORTA ; revisar botones e incrementar si se suelta
-    btfss PORTB,0
+    btfsc PORTB,0
     incf PORTA
 
-    btfss PORTB, 1
+    btfsc PORTB, 1
     decf PORTA
 
     bcf ((INTCON) and 07Fh), 0 ; limpiar la bandera, pare reiniciar el conteo
     return
 
 inttimer:
-    banksel PORTA
-    incf cont ; si la bandera del timer0 es 1 entonces incrementar
-    call reiniciarT0
-    return
+          ; si la bandera del timer0 es 1 entonces incrementar
+    reiniciarT0
+    bcf PORTB,2
+    bcf PORTB,3
+    bcf PORTB,4
+    bcf PORTB,5
+    bcf PORTB,6
+    bcf PORTB,7
+
+    btfsc banderas,0
+    goto disp1
+    btfsc banderas,1
+    goto disp2
+    btfsc banderas,2
+    goto disp3
+    btfsc banderas,3
+    goto disp4
+    btfsc banderas,4
+    goto disp5
+
+disp0:
+ movf dise,W
+ movwf PORTC
+ bsf PORTB,2
+ goto sigdis1
+
+
+disp1:
+ movf dise+1,W
+ movwf PORTC
+ bsf PORTB,3
+ goto sigdis2
+disp2:
+ movf dise+2,W
+ movwf PORTD
+ bsf PORTB,4
+ goto sigdis3
+disp3:
+ movf dise+3,W
+ movwf PORTD
+ bsf PORTB,5
+ goto sigdis4
+disp4:
+ movf dise+4,W
+ movwf PORTD
+ bsf PORTB,6
+ goto sigdis5
+disp5:
+ movf dise+5,W
+ movwf PORTD
+ bsf PORTB,7
+ goto sigdis0
+
+sigdis1:
+ movlw 1
+ xorwf banderas,F
+ return
+sigdis2:
+ movlw 3
+ xorwf banderas,F
+ return
+sigdis3:
+ movlw 6
+ xorwf banderas,F
+ return
+sigdis4:
+ movlw 12
+ xorwf banderas,F
+ return
+sigdis5:
+ movlw 24
+ xorwf banderas,F
+ return
+
+ sigdis0:
+ clrf banderas,F
+
+ return
+
+
+
 
   PSECT code, delta=2, abs
   ORG 100h ; posicion para la tabla
@@ -2563,6 +2652,8 @@ inttimer:
 
   ;------------configuracion----------------------------------------------------
 main:
+
+
     call io
     call conclock
     call contimer
@@ -2574,8 +2665,12 @@ main:
 
     ;----------loop principal---------------------------------------------------
 loop:
-    call dison ; subrutina para copiar leds en 7seg
-    call delay_1s ; delay del timer0 en 1s= 1000ms
+; call dison ; subrutina para copiar leds en 7seg
+    movf PORTA, W
+    movwf verif
+    call centenas
+    call separarnib
+    call dison2
     goto loop
   ;-------------------------sub rutinas-----------------------------------------
 coniocb:
@@ -2595,8 +2690,7 @@ io:
      clrf ANSELH
 
     banksel TRISA
-    movlw 0F0h
-    movwf TRISA ; salidas para leds
+    clrf TRISA ; salidas para leds
 
     movlw 003h
     movwf TRISB ; colocar portB como entradas
@@ -2624,26 +2718,20 @@ contimer:
     bsf ((OPTION_REG) and 07Fh), 1
     bsf ((OPTION_REG) and 07Fh), 0; PS=111, velocidad de seleccion
     banksel PORTA
-    call reiniciarT0
+    reiniciarT0
     return
 
-reiniciarT0:
-    movlw 178 ; valor inicial/ delay suficiente
-    movwf TMR0
-    bcf ((INTCON) and 07Fh), 2
-    return
-
-delay_1s:
-    movlw 100
-    subwf cont, W
-    btfss STATUS, 2
-    return
-    incf dise
-    movf dise, W
-    call tabla
-    movwf PORTD
-    clrf cont
-    return
+;delay_1s:
+; movlw 100
+; subwf cont, W
+; btfss STATUS, 2
+; return
+; incf dise
+; movf dise, W
+; call tabla
+; movwf PORTD
+; clrf cont
+; return
 
 conclock:
     banksel OSCCON
@@ -2662,11 +2750,82 @@ coninten:
     bsf ((INTCON) and 07Fh), 5
     bcf ((INTCON) and 07Fh), 2
     return
-dison:
+;dison:
+; movf PORTA, W
+; call tabla
+; movwf PORTC, F
+; return
+
+separarnib:
+
+
     movf PORTA, W
-    call tabla
-    movwf PORTC, F
+    movwf var
+
+    movf var,W
+    andlw 0x0f
+    movwf nibbles
+    swapf var, W
+    andlw 0x0f
+    movwf nibbles+1
     return
 
+dison2:
+    movf nibbles, w
+    call tabla
+    movwf dise,F
 
-end
+    movf nibbles+1, w
+    call tabla
+    movwf dise+1,F
+
+    movf UNI,W
+    call tabla
+    movwf dise+2
+
+    movf DECE,W
+    call tabla
+    movwf dise+3
+
+    movf CEN,W
+    call tabla
+    movwf dise+4
+
+    movlw 00111111B
+    movwf dise+5
+
+    return
+    centenas:
+ clrf CEN
+ movlw 100
+ subwf verif, W
+ btfsc STATUS, 0
+ incf CEN
+ btfsc STATUS, 0
+ movwf verif
+ btfsc STATUS, 0
+ goto $-7
+ call decenas
+ return
+    decenas:
+ clrf DECE
+ movlw 10
+ subwf verif, W
+ btfsc STATUS, 0
+ incf DECE
+ btfsc STATUS, 0
+ movwf verif
+ btfsc STATUS, 0
+ goto $-7
+ call unidades
+ return
+    unidades:
+ clrf UNI
+ movlw 1
+ subwf verif, F
+ btfsc STATUS, 0
+ incf UNI
+ btfss STATUS, 0
+ return
+ goto $-6
+    end

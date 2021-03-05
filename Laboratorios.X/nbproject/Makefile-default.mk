@@ -57,17 +57,17 @@ OBJECTDIR=build/${CND_CONF}/${IMAGE_TYPE}
 DISTDIR=dist/${CND_CONF}/${IMAGE_TYPE}
 
 # Source Files Quoted if spaced
-SOURCEFILES_QUOTED_IF_SPACED=Lab4.s
+SOURCEFILES_QUOTED_IF_SPACED=Lab5.s
 
 # Object Files Quoted if spaced
-OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Lab4.o
-POSSIBLE_DEPFILES=${OBJECTDIR}/Lab4.o.d
+OBJECTFILES_QUOTED_IF_SPACED=${OBJECTDIR}/Lab5.o
+POSSIBLE_DEPFILES=${OBJECTDIR}/Lab5.o.d
 
 # Object Files
-OBJECTFILES=${OBJECTDIR}/Lab4.o
+OBJECTFILES=${OBJECTDIR}/Lab5.o
 
 # Source Files
-SOURCEFILES=Lab4.s
+SOURCEFILES=Lab5.s
 
 
 
@@ -94,21 +94,21 @@ MP_PROCESSOR_OPTION=PIC16F887
 # ------------------------------------------------------------------------------------
 # Rules for buildStep: pic-as-assembler
 ifeq ($(TYPE_IMAGE), DEBUG_RUN)
-${OBJECTDIR}/Lab4.o: Lab4.s  nbproject/Makefile-${CND_CONF}.mk 
+${OBJECTDIR}/Lab5.o: Lab5.s  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Lab4.o 
+	@${RM} ${OBJECTDIR}/Lab5.o 
 	${MP_AS} -mcpu=PIC16F887 -c \
-	-o ${OBJECTDIR}/Lab4.o \
-	Lab4.s \
+	-o ${OBJECTDIR}/Lab5.o \
+	Lab5.s \
 	 -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
 	
 else
-${OBJECTDIR}/Lab4.o: Lab4.s  nbproject/Makefile-${CND_CONF}.mk 
+${OBJECTDIR}/Lab5.o: Lab5.s  nbproject/Makefile-${CND_CONF}.mk 
 	@${MKDIR} "${OBJECTDIR}" 
-	@${RM} ${OBJECTDIR}/Lab4.o 
+	@${RM} ${OBJECTDIR}/Lab5.o 
 	${MP_AS} -mcpu=PIC16F887 -c \
-	-o ${OBJECTDIR}/Lab4.o \
-	Lab4.s \
+	-o ${OBJECTDIR}/Lab5.o \
+	Lab5.s \
 	 -msummary=+mem,-psect,-class,-hex,-file,-sha1,-sha256,-xml,-xmlfull -fmax-errors=20 -mwarn=0 -xassembler-with-cpp
 	
 endif
