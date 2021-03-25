@@ -11,10 +11,10 @@
 # All addresses and the length are given in unqualified hexadecimal
 # in delta units.  Any other numeric values are decimal.
 %PSECTS
-$build/default/production/Lab5.o
+$build/default/production/Lab6.o
 resVect CODE 0 0 0 3 2
-code CODE 0 0 0 196 2
-intVect CODE 0 0 0 56 2
+code CODE 0 0 0 18D 2
+intVect CODE 0 0 0 3D 2
 udata_bank0 BANK0 1 20 20 12 1
 udata_shr COMMON 1 70 70 3 1
 config CONFIG 4 2007 2007 2 2
@@ -32,14 +32,14 @@ BANK0 32-6F 1
 BANK1 A0-EF 1
 BANK2 110-16F 1
 BANK3 190-1EF 1
-CONST 196-1FFF 2
-ENTRY 196-1FFF 2
+CONST 18D-1FFF 2
+ENTRY 18D-1FFF 2
 IDLOC 2000-2003 2
-CODE 196-1FFF 2
+CODE 18D-1FFF 2
 COMMON 73-7F 1
 EEDATA 2100-21FF 2
-STRCODE 196-1FFF 2
-STRING 196-1FFF 2
+STRCODE 18D-1FFF 2
+STRING 18D-1FFF 2
 # %LINETAB Section
 # This section enumerates the file/line to address mappings.
 # The beginning of the section is indicated by %LINETAB.
@@ -53,256 +53,188 @@ STRING 196-1FFF 2
 # are in ascending order of addresses.
 # All other numeric values are in decimal.
 %LINETAB
-$build/default/production/Lab5.o
-0 intVect CODE >63:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4 intVect CODE >65:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4 intVect CODE >66:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-5 intVect CODE >67:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-6 intVect CODE >68:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-7 intVect CODE >70:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-7 intVect CODE >71:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-8 intVect CODE >72:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-9 intVect CODE >74:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-A intVect CODE >75:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-B intVect CODE >77:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-B intVect CODE >78:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-C intVect CODE >79:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-D intVect CODE >80:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-E intVect CODE >81:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-F intVect CODE >82:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-10 intVect CODE >84:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-10 intVect CODE >85:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-12 intVect CODE >86:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-13 intVect CODE >87:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-14 intVect CODE >89:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-15 intVect CODE >90:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-16 intVect CODE >92:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-17 intVect CODE >93:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18 intVect CODE >95:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18 intVect CODE >97:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-1D intVect CODE >98:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-1E intVect CODE >99:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-1F intVect CODE >100:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-20 intVect CODE >101:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-21 intVect CODE >102:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-22 intVect CODE >103:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-23 intVect CODE >105:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-24 intVect CODE >106:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-25 intVect CODE >107:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-26 intVect CODE >108:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-27 intVect CODE >109:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-28 intVect CODE >110:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-29 intVect CODE >111:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-2A intVect CODE >112:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-2B intVect CODE >113:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-2C intVect CODE >114:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-2D intVect CODE >116:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-2D intVect CODE >117:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-2E intVect CODE >118:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-2F intVect CODE >119:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-30 intVect CODE >120:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-31 intVect CODE >123:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-31 intVect CODE >124:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-32 intVect CODE >125:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-33 intVect CODE >126:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-34 intVect CODE >127:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-35 intVect CODE >128:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-35 intVect CODE >129:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-36 intVect CODE >130:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-37 intVect CODE >131:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-38 intVect CODE >132:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-39 intVect CODE >133:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-39 intVect CODE >134:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-3A intVect CODE >135:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-3B intVect CODE >136:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-3C intVect CODE >137:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-3D intVect CODE >138:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-3D intVect CODE >139:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-3E intVect CODE >140:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-3F intVect CODE >141:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-40 intVect CODE >142:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-41 intVect CODE >143:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-41 intVect CODE >144:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-42 intVect CODE >145:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-43 intVect CODE >146:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-44 intVect CODE >147:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-45 intVect CODE >149:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-45 intVect CODE >150:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-46 intVect CODE >151:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-47 intVect CODE >152:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-48 intVect CODE >153:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-48 intVect CODE >154:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-49 intVect CODE >155:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4A intVect CODE >156:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4B intVect CODE >157:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4B intVect CODE >158:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4C intVect CODE >159:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4D intVect CODE >160:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4E intVect CODE >161:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4E intVect CODE >162:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-4F intVect CODE >163:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-50 intVect CODE >164:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-51 intVect CODE >165:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-51 intVect CODE >166:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-52 intVect CODE >167:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-53 intVect CODE >168:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-54 intVect CODE >170:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-54 intVect CODE >171:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-55 intVect CODE >173:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-0 resVect CODE >57:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-0 resVect CODE >58:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-0 resVect CODE >59:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-2 resVect CODE >60:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-0 code CODE >179:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-100 code CODE >180:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-100 code CODE >181:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-101 code CODE >182:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-102 code CODE >183:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-103 code CODE >184:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-104 code CODE >185:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-105 code CODE >186:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-106 code CODE >187:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-107 code CODE >188:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-108 code CODE >189:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-109 code CODE >190:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-10A code CODE >191:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-10B code CODE >192:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-10C code CODE >193:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-10D code CODE >194:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-10E code CODE >195:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-10F code CODE >196:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-110 code CODE >197:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-111 code CODE >198:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-112 code CODE >199:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-113 code CODE >200:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-114 code CODE >205:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-114 code CODE >208:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-115 code CODE >209:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-116 code CODE >210:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-117 code CODE >211:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-118 code CODE >212:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-119 code CODE >214:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-11B code CODE >218:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-11B code CODE >220:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-11C code CODE >221:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-11D code CODE >222:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-11E code CODE >223:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-11F code CODE >224:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-120 code CODE >225:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-121 code CODE >227:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-121 code CODE >228:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-123 code CODE >229:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-124 code CODE >230:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-125 code CODE >232:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-127 code CODE >233:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-128 code CODE >234:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-129 code CODE >236:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-12A code CODE >238:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-12A code CODE >239:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-12C code CODE >240:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-12D code CODE >241:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-12E code CODE >243:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-130 code CODE >244:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-131 code CODE >246:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-132 code CODE >247:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-133 code CODE >249:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-134 code CODE >251:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-135 code CODE >253:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-136 code CODE >254:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-137 code CODE >255:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-138 code CODE >257:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-13A code CODE >258:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-13B code CODE >259:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-13C code CODE >260:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-13D code CODE >261:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-13E code CODE >262:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-13F code CODE >264:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-13F code CODE >265:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-141 code CODE >266:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-142 code CODE >267:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-143 code CODE >268:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-144 code CODE >269:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-145 code CODE >270:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-146 code CODE >271:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-148 code CODE >272:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-14D code CODE >273:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-14E code CODE >287:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-14E code CODE >288:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-150 code CODE >289:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-151 code CODE >290:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-152 code CODE >291:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-153 code CODE >292:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-154 code CODE >294:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-155 code CODE >296:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-155 code CODE >297:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-157 code CODE >298:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-158 code CODE >299:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-159 code CODE >300:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-15A code CODE >301:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-15B code CODE >302:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-15C code CODE >303:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-15D code CODE >310:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-15D code CODE >313:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-15E code CODE >314:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-15F code CODE >316:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-160 code CODE >317:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-161 code CODE >318:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-162 code CODE >319:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-163 code CODE >320:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-164 code CODE >321:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-165 code CODE >322:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-166 code CODE >324:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-166 code CODE >325:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-167 code CODE >326:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-168 code CODE >327:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-169 code CODE >329:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-16A code CODE >330:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-16B code CODE >331:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-16C code CODE >333:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-16D code CODE >334:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-16E code CODE >335:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-16F code CODE >337:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-170 code CODE >338:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-171 code CODE >339:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-172 code CODE >341:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-173 code CODE >342:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-174 code CODE >343:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-175 code CODE >345:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-176 code CODE >346:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-177 code CODE >348:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-178 code CODE >349:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-178 code CODE >350:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-179 code CODE >351:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-17A code CODE >352:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-17B code CODE >353:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-17C code CODE >354:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-17D code CODE >355:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-17E code CODE >356:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-17F code CODE >357:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-180 code CODE >358:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-181 code CODE >359:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-182 code CODE >360:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-183 code CODE >361:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-183 code CODE >362:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-184 code CODE >363:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-185 code CODE >364:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-186 code CODE >365:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-187 code CODE >366:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-188 code CODE >367:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-189 code CODE >368:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18A code CODE >369:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18B code CODE >370:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18C code CODE >371:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18D code CODE >372:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18E code CODE >373:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18E code CODE >374:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-18F code CODE >375:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-190 code CODE >376:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-191 code CODE >377:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-192 code CODE >378:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-193 code CODE >379:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-194 code CODE >380:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
-195 code CODE >381:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab5.s
+$build/default/production/Lab6.o
+0 intVect CODE >80:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+4 intVect CODE >82:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+4 intVect CODE >83:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+5 intVect CODE >84:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+6 intVect CODE >85:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+7 intVect CODE >87:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+7 intVect CODE >89:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+8 intVect CODE >90:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+9 intVect CODE >92:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+A intVect CODE >93:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+B intVect CODE >95:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+C intVect CODE >96:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+D intVect CODE >98:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+D intVect CODE >99:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+E intVect CODE >100:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+F intVect CODE >101:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+10 intVect CODE >102:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+11 intVect CODE >103:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+12 intVect CODE >106:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+12 intVect CODE >108:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+17 intVect CODE >109:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+18 intVect CODE >110:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+19 intVect CODE >113:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+1A intVect CODE >114:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+1B intVect CODE >116:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+1B intVect CODE >117:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+1C intVect CODE >118:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+1D intVect CODE >119:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+1E intVect CODE >120:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+1F intVect CODE >123:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+1F intVect CODE >124:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+20 intVect CODE >125:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+21 intVect CODE >126:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+22 intVect CODE >127:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+23 intVect CODE >128:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+24 intVect CODE >131:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+24 intVect CODE >132:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+25 intVect CODE >133:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+26 intVect CODE >134:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+27 intVect CODE >136:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+27 intVect CODE >137:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+2E intVect CODE >138:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+2F intVect CODE >139:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+30 intVect CODE >140:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+30 intVect CODE >141:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+37 intVect CODE >142:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+38 intVect CODE >143:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+39 intVect CODE >144:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+39 intVect CODE >145:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+3A intVect CODE >146:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+3B intVect CODE >147:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+3B intVect CODE >148:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+3C intVect CODE >149:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+0 resVect CODE >74:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+0 resVect CODE >75:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+0 resVect CODE >76:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+2 resVect CODE >77:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+0 code CODE >154:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+100 code CODE >155:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+100 code CODE >156:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+101 code CODE >157:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+102 code CODE >158:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+103 code CODE >159:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+104 code CODE >160:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+105 code CODE >161:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+106 code CODE >162:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+107 code CODE >163:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+108 code CODE >164:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+109 code CODE >165:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+10A code CODE >166:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+10B code CODE >167:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+10C code CODE >168:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+10D code CODE >169:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+10E code CODE >170:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+10F code CODE >171:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+110 code CODE >172:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+111 code CODE >173:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+112 code CODE >174:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+113 code CODE >175:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+114 code CODE >180:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+114 code CODE >183:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+115 code CODE >184:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+116 code CODE >185:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+117 code CODE >186:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+118 code CODE >187:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+119 code CODE >188:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+11A code CODE >189:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+11C code CODE >191:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+11C code CODE >192:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+11D code CODE >194:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+11E code CODE >195:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+11F code CODE >197:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+120 code CODE >198:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+121 code CODE >200:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+122 code CODE >203:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+122 code CODE >204:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+124 code CODE >205:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+125 code CODE >206:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+126 code CODE >208:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+128 code CODE >209:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+129 code CODE >210:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+12A code CODE >211:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+12B code CODE >212:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+12C code CODE >216:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+12E code CODE >217:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+12F code CODE >218:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+130 code CODE >219:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+131 code CODE >221:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+131 code CODE >222:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+133 code CODE >223:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+134 code CODE >224:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+135 code CODE >225:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+136 code CODE >226:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+137 code CODE >227:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+138 code CODE >228:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+13A code CODE >229:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+13F code CODE >230:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+140 code CODE >232:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+140 code CODE >233:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+142 code CODE >234:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+143 code CODE >235:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+144 code CODE >236:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+145 code CODE >237:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+146 code CODE >238:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+147 code CODE >239:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+148 code CODE >242:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+14A code CODE >243:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+151 code CODE >244:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+152 code CODE >245:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+152 code CODE >246:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+154 code CODE >247:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+155 code CODE >248:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+156 code CODE >249:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+157 code CODE >250:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+158 code CODE >251:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+159 code CODE >252:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+15A code CODE >253:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+15B code CODE >255:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+15D code CODE >256:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+164 code CODE >257:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+165 code CODE >258:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+165 code CODE >259:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+167 code CODE >260:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+168 code CODE >261:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+169 code CODE >262:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+16A code CODE >263:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+16B code CODE >265:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+16C code CODE >267:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+16C code CODE >268:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+16E code CODE >269:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+16F code CODE >270:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+170 code CODE >272:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+171 code CODE >273:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+172 code CODE >275:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+174 code CODE >276:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+175 code CODE >278:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+177 code CODE >279:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+178 code CODE >281:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+179 code CODE >284:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+179 code CODE >286:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+17A code CODE >287:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+17B code CODE >288:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+17C code CODE >290:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+17D code CODE >291:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+17E code CODE >292:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+17F code CODE >293:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+180 code CODE >295:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+180 code CODE >297:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+181 code CODE >298:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+182 code CODE >299:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+183 code CODE >301:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+184 code CODE >302:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+185 code CODE >303:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+186 code CODE >305:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+187 code CODE >307:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+188 code CODE >308:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+188 code CODE >309:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+189 code CODE >310:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+18A code CODE >311:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+18B code CODE >313:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
+18C code CODE >314:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X\Lab6.s
 # %SYMTAB Section
 # An enumeration of all symbols in the program.
 # The beginning of the section is indicated by %SYMTAB.
@@ -315,7 +247,7 @@ F intVect CODE >82:C:\Users\1TB\MPLABXProjects\LaboratoriosMicros\Laboratorios.X
 # was defined in a psect then <psect> will be "-". File-name
 # is the name of the object file in which the symbol was defined.
 %SYMTAB
-__Hspace_0 196 0 ABS 0 - -
+__Hspace_0 18D 0 ABS 0 - -
 __Hspace_1 73 0 ABS 0 - -
 __Hspace_3 0 0 ABS 0 - -
 __Hspace_4 4010 0 ABS 0 - -

@@ -7,7 +7,7 @@
 ; Hardware: Leds en el puerto A. PushBotons en el puerto B, 7 segmentos en el puerto D y C
 ;
 ;Creado: 2 mar, 2021
-;Ultima Modificacion:   mar, 2021
+;Ultima Modificacion:   06 mar, 2021
     
 PROCESSOR 16F887
 
@@ -93,7 +93,7 @@ INTIOCB:
     return
   
 inttimer:
-  	       ; si la bandera del timer0 es 1 entonces incrementar
+  	      
     reiniciarT0
     bcf    PORTB,2
     bcf    PORTB,3
@@ -101,23 +101,24 @@ inttimer:
     bcf    PORTB,5
     bcf    PORTB,6
     bcf    PORTB,7
-    
-    btfsc   banderas,0
+    ;Multiplexiar
+    ; Crear un ciclo de condiciones
+    btfsc   banderas,0		    ;If bandera,0 entonces ir al display 1
     goto    disp1
-    btfsc   banderas,1
+    btfsc   banderas,1		    ;If bandera,1 entonces ir al display 2
     goto    disp2
-    btfsc   banderas,2
+    btfsc   banderas,2		    ;If bandera,2 entonces ir al display 3  
     goto    disp3
-    btfsc   banderas,3
+    btfsc   banderas,3		    ;If bandera,3 entonces ir al display 4
     goto    disp4
-    btfsc   banderas,4
+    btfsc   banderas,4		    ;If bandera,4 entonces ir al display 5
     goto    disp5
     
 disp0:
-	movf	dise,W
+	movf	dise,W		    ; mover el valor a W para colocarlo en el PORTC
 	movwf	PORTC
-	bsf	PORTB,2
-	goto	sigdis1
+	bsf	PORTB,2		    ; revisar si el bit del transitor que controla el display esta encendido
+	goto	sigdis1		    ; ir a siguiente display 
 	
 	
 disp1:
@@ -147,7 +148,7 @@ disp5:
 	goto	sigdis0
 	
 sigdis1:
-	movlw   1
+	movlw   1		;mover 1 a w y realizar un XOR guardado en F 
 	xorwf   banderas,F
 	return
 sigdis2:
@@ -205,11 +206,11 @@ sigdis5:
 main:	
     
 
-    call io
-    call conclock
-    call contimer
-    call coninten
-    call coniocb
+    call io	    ; llamar las congiguraciones de entrada y salida	
+    call conclock   ; llamar las congiguraciones del reloj interno
+    call contimer   ; llamar las congiguraciones deL TIMER
+    call coninten   ; llamar las congiguraciones de banderas de interrupciones
+    call coniocb    ; llamar las congiguraciones de interrupt on change port b
     
     banksel PORTA   
   
@@ -217,11 +218,11 @@ main:
     ;----------loop principal---------------------------------------------------
 loop: 
 ;    call dison		; subrutina para copiar leds en 7seg
-    movf    PORTA, W
-    movwf   verif
-    call    centenas
-    call     separarnib
-    call     dison2
+    movf    PORTA, W	; colocar el valor del los leds en W
+    movwf   verif	; mover el valor a una variable de almacenamiento para no alterar el PORTA
+    call    centenas	; llamar sub rutina de division
+    call    separarnib
+    call    dison2
     goto loop
   ;-------------------------sub rutinas-----------------------------------------
 coniocb:
@@ -271,19 +272,8 @@ contimer:
     banksel PORTA
     reiniciarT0
     return
-    
-;delay_1s:
-;    movlw   100
-;    subwf   cont, W
-;    btfss   STATUS, 2
-;    return
-;    incf   dise
-;    movf   dise, W
-;    call   tabla 
-;    movwf PORTD
-;    clrf cont
-;    return
-    
+
+
 conclock:
     banksel OSCCON
     bsf	    IRCF0 
@@ -300,16 +290,10 @@ coninten:
     bcf	    RBIF    ; cambio en la bandera
     bsf	    T0IE
     bcf	    T0IF
-    return
-;dison: 
-;    movf PORTA, W
-;    call tabla
-;    movwf PORTC, F
-;    return
+
 
 separarnib:
-    
-     
+    ; se separa la varible de nibbles para los primeros contadores que se muestran con el valor de PORT A
     movf     PORTA, W
     movwf    var
     
@@ -322,6 +306,7 @@ separarnib:
     return
     
 dison2: 
+	; aqui se preparan los displays, quiere decir que se coloca el valor que corresponde a cada 1
     movf    nibbles, w
     call    tabla
     movwf   dise,F
@@ -346,38 +331,39 @@ dison2:
     movwf   dise+5
     
     return
+    
     centenas: 
-	clrf	CEN    
-	movlw	100
-	subwf	verif, W
-	btfsc	STATUS, 0
-	incf	CEN
-	btfsc	STATUS, 0
-	movwf	verif
-	btfsc	STATUS, 0
-	goto	$-7
-	call	decenas
+	clrf	CEN	    ;limpiar variable donde se guardaran las centenas    
+	movlw	100	    ;mover 100 a w
+	subwf	verif, W    ;restar 100 al valor del PORT A
+	btfsc	STATUS, 0   ;skip if el carry esta en 0
+	incf	CEN	    ;incrementar el contador de la variable centena
+	btfsc	STATUS, 0   ;skip if el carry esta en 0
+	movwf	verif	   ; mover el valor de la resta a w
+	btfsc	STATUS, 0   ;skip if el carry esta en 0
+	goto	$-7	    ; si es posible restar 100 entonces realizar todo el proceso
+	call	decenas	    ; si el numero ya no se puede restar 100 entonces ir a decenas
 	return
     decenas:
-	clrf DECE    
-	movlw	10
-	subwf	verif, W
-	btfsc	STATUS, 0
-	incf	DECE
-	btfsc	STATUS, 0
-	movwf	verif
-	btfsc	STATUS, 0
-	goto	$-7
-	call unidades
+	clrf DECE	    ;limpuiar la variable donde se guardan las decenas	
+	movlw	10	    ;mover 10 a w
+	subwf	verif, W    ;restar 10 al valor del PORT A
+	btfsc	STATUS, 0   ;skip if el carry esta en 0
+	incf	DECE	    ; incrementar el contador de la variable decenas
+	btfsc	STATUS, 0   ;skip if el carry esta en 0
+	movwf	verif	    ; mover el valor de la resta a w
+	btfsc	STATUS, 0   ;skip if el carry esta en 0
+	goto	$-7	    ; si se puede seguir restando 10 entonces realizar todo el proceso
+	call unidades	    ; si ya no se puede restar 10, por que la bandera de carry se encendio entonces ir a unidades
 	return
     unidades:
-	clrf UNI    
-	movlw	1
-	subwf	verif, F
-	btfsc	STATUS, 0
-	incf	UNI
-	btfss	STATUS, 0
-	return
+	clrf UNI	    ;limpiar la variable donde se guardan las unidades
+	movlw	1	    ;mover 1 a w
+	subwf	verif, F    ; restar 1 al valor del PORT A
+	btfsc	STATUS, 0   ;skip if el carry esta en 0
+	incf	UNI	    ; incrementar el contador de la variable unidades
+	btfss	STATUS, 0   ; si tenemos un carry en el valor entonces realizar otra vez el proceso
+	return		    ; si no se puede seguir restando 1 erntonces se regresa al stack 
 	goto $-6
     end
 
