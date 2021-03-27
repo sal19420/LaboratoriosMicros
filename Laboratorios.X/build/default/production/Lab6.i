@@ -7,10 +7,10 @@
 ; Compilador: pic-as (v2.31), MPLABX v5.45
 ;
 ; Programa: TMR01 Y TMR02
-; Hardware: 7 SEGMENTOS EN PUERTO C Y LED EN PUERTO D, TRANSISTORES PARA MULTUPLEX
+; Hardware: 7 SEGMENTOS EN PUERTO C Y LED EN PUERTO D, TRANSISTORES PARA MULTIPLEX
 ;
 ;Creado: 23 mar, 2021
-;Ultima Modificacion: mar, 2021
+;Ultima Modificacion: 27 mar, 2021
 
 PROCESSOR 16F887
 
@@ -2482,25 +2482,25 @@ ENDM
 reiniciarT0 macro
     banksel PORTA
     movlw 254 ; valor inicial/ delay suficiente
-    movwf TMR0
-    bcf ((INTCON) and 07Fh), 2
+    movwf TMR0 ; se coloca el valor en el inicio
+    bcf ((INTCON) and 07Fh), 2 ; limpiar la bandera del timer para no sobre poner valores
     endm
 reiniciarT1 macro
     banksel PORTA
-    movlw 238 ; valor inicial/ delay suficiente
+    movlw 238 ; valor inicial/ delay suficiente este valor se divide en 2 bytes
     movwf TMR1L
     movlw 133
     movwf TMR1H
-    bcf ((PIR1) and 07Fh), 0
+    bcf ((PIR1) and 07Fh), 0 ; limpiar la bandera del timer para no sobre poner valores
     endm
 
 reiniciarT2 macro
     banksel TRISA
     movlw 245 ; valor inicial/ delay suficiente
-    movwf PR2
+    movwf PR2 ; colocar el valor inicial en el registro de comparacion
 
     banksel PORTA
-    bcf ((PIR1) and 07Fh), 1
+    bcf ((PIR1) and 07Fh), 1 ; limpiar la bandera del timer para no sobre poner valores
     endm
 
 PSECT udata_shr ;comoon memory
@@ -2511,11 +2511,8 @@ PSECT udata_bank0
     var: DS 1
     banderas: DS 1
     nibbles: DS 2
-    UNI: DS 1
-    DECE: DS 1
-    CEN: DS 1
-    dise: DS 8
-    verif: DS 3
+    dise: DS 2
+
 
 
   PSECT resVect, class=CODE, abs, delta=2
@@ -2538,11 +2535,11 @@ PSECT intVect, class=CODE, abs, delta=2
     btfsc ((INTCON) and 07Fh), 2 ; revisar bandera de Timer0
     call inttimer ;interrupcion del timer
 
-    btfsc ((PIR1) and 07Fh), 0
-    call inttimer1
+    btfsc ((PIR1) and 07Fh), 0 ; revisar bandera de Timer1
+    call inttimer1 ;interrupcion del timer
 
-    btfsc ((PIR1) and 07Fh), 1
-    call inttimer2
+    btfsc ((PIR1) and 07Fh), 1 ; revisar bandera de Timer2
+    call inttimer2 ;interrupcion del timer
 
 pop:
     swapf ESTATUS, W
@@ -2583,18 +2580,18 @@ sigdis1:
  return
 
 inttimer1:
-    reiniciarT1
-    incf var, F
+    reiniciarT1 ;reiniciar para colocar un valor nuevo
+    incf var, F ; incrementar en el contador
     return
 inttimer2:
-    reiniciarT2
-    btfsc banderas,1
+    reiniciarT2 ; reiniciar
+    btfsc banderas,1 ;revisar banderas, si esta apagada entonces
     goto ON
 OFF:
-    bsf banderas,1
+    bsf banderas,1 ; setear la bandera
     return
 ON:
-    bcf banderas,1
+    bcf banderas,1 ; limpiar la bandera
     return
 
 
@@ -2631,20 +2628,22 @@ main:
 
     call io ; llamar las congiguraciones de entrada y salida
     call conclock ; llamar las congiguraciones del reloj interno
-    call contimer ; llamar las congiguraciones deL TIMER
+    call contimer ; llamar las congiguraciones deL TIMER0
     call coninten ; llamar las congiguraciones de banderas de interrupciones
-    call contimer1
-    call contimer2
+    call contimer1 ; llamar las congiguraciones deL TIMER1
+    call contimer2 ; llamar las congiguraciones deL TIMER2
    banksel PORTA
     ;----------loop principal---------------------------------------------------
 loop:
     call separarnib
 
-    btfss banderas,1
-    call dison2
+    btfss banderas,1 ; si la bandera esta apagada entonces
+    call dison2 ; llamar a encender todo
 
-    btfsc banderas,1
-    call apagar
+    btfsc banderas,1 ; si la bandera esta prendida entonces
+    call apagar ; llamar a apagar
+    ; esto se realiza para ver el titileo
+
 
     goto loop
   ;-------------------------sub rutinas-----------------------------------------
@@ -2680,23 +2679,22 @@ contimer:
 
 contimer1:
     banksel PORTA
-    bsf ((T1CON) and 07Fh), 0
+    bsf ((T1CON) and 07Fh), 0 ; habilitamos el TMR1
     bcf ((T1CON) and 07Fh), 1
     bcf ((T1CON) and 07Fh), 3
     bsf ((T1CON) and 07Fh), 4
     bsf ((T1CON) and 07Fh), 5
     bcf ((T1CON) and 07Fh), 6
-    ;bsf ((T1CON) and 07Fh), 2
 
     banksel PORTA
     reiniciarT1
     return
 contimer2:
     banksel PORTA
-    bsf ((T2CON) and 07Fh), 1
+    bsf ((T2CON) and 07Fh), 1 ; en esta parte colocaremos el PreScaler a 1:8
     bsf ((T2CON) and 07Fh), 0
-    bsf ((T2CON) and 07Fh), 2
-    bsf ((T2CON) and 07Fh), 6
+    bsf ((T2CON) and 07Fh), 2 ; habilitaremos el TMR2
+    bsf ((T2CON) and 07Fh), 6 ; colocaremos el PostScaler a 1:16
     bsf ((T2CON) and 07Fh), 5
     bsf ((T2CON) and 07Fh), 4
     bsf ((T2CON) and 07Fh), 3
@@ -2706,7 +2704,7 @@ contimer2:
     return
 conclock:
     banksel OSCCON
-    bcf ((OSCCON) and 07Fh), 4 ;1MHz
+    bcf ((OSCCON) and 07Fh), 4 ;el reloj oscilara a 1MHz
     bcf ((OSCCON) and 07Fh), 5
     bsf ((OSCCON) and 07Fh), 6
     bsf ((OSCCON) and 07Fh), 0 ; habilitar reloj interno
@@ -2714,18 +2712,22 @@ conclock:
     return
 
 coninten:
+    ; en esta parte declararemos y colocaremos las banderas necesarias para cada Timer
     banksel PORTA
     bsf ((INTCON) and 07Fh), 7 ; INTCON
     bsf ((INTCON) and 07Fh), 6
 
     bsf ((INTCON) and 07Fh), 5
     bcf ((INTCON) and 07Fh), 2
+    ; colocamos las banderas de habilitar interrupcion
 
     banksel TRISA
     bsf ((PIE1) and 07Fh), 0
-
+    bsf ((PIE1) and 07Fh), 1
+    ; limpiamos las banderas de interrupcion para crear nuestros ciclos
     banksel PORTA
     bcf ((PIR1) and 07Fh), 0
+    bcf ((PIR1) and 07Fh), 1
 
     return
 
@@ -2742,7 +2744,7 @@ separarnib:
     return
 
 dison2:
- ; aqui se preparan los displays, quiere decir que se coloca el valor que corresponde a cada 1
+       ; aqui se preparan los displays, quiere decir que se coloca el valor que corresponde a cada 1
     movf nibbles, w
     call tabla
     movwf dise
@@ -2751,9 +2753,10 @@ dison2:
     call tabla
     movwf dise+1
 
-    bsf PORTD,2
+    bsf PORTD,2 ; Cuando realizemos el conteo necesario y separemos valores, encederemos la led cada 250 ms
 
     return
+
 apagar:
     movlw 0
     movwf dise
