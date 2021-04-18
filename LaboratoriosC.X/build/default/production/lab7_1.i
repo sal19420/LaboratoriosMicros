@@ -2654,34 +2654,61 @@ typedef uint16_t uintptr_t;
 
 
 
+char display[10] = {0X3F,0X06,0X5B,0X04F,0X66,0X6D,0X7D,0X07,0X7F,0X67};
+int banderas;
+int UNI;
+int DECE;
+int CEN;
+int cont;
+int res;
 
-unsigned char cont = 1;
+
 
 void confi(void);
-void inttimer0 (void);
+void ISR (void);
+int division(void);
 
 
 
 
-void __attribute__((picinterrupt(("")))) inttimer0(void){
+void __attribute__((picinterrupt(("")))) ISR(void){
     if(T0IF == 1){
-    PORTD++;
+     PORTB = 0X00;
 
-    TMR0 = 217;
-    INTCONbits.T0IF = 0;
-    }
+       if (banderas == 0b00000000){
+         PORTBbits.RB4 = 0;
+         PORTBbits.RB2 = 1;
+         PORTD = (display[UNI]);
+         banderas = 0b00000001;
+        }
+     else if (banderas == 0b00000001){
+         PORTBbits.RB2 = 0;
+         PORTBbits.RB3 = 1;
+         PORTD = (display[DECE]);
+         banderas = 0b00000010;
+        }
+     else if (banderas == 0b00000010){
+         PORTBbits.RB4 = 1;
+         PORTBbits.RB3 = 0;
+         PORTD = (display[CEN]);
+         banderas = 0b00000000;
+            }
+     TMR0 = 217;
+     INTCONbits.T0IF = 0;
 
-    if (RBIF == 1){
+        }
+
+     if (RBIF == 1){
         if (RB0 == 0){
-            PORTC = PORTC + 1;
+            PORTC++;
         }
         if (RB1 == 0){
-            PORTC = PORTC - 1 ;
+            PORTC-- ;
         }
         INTCONbits.RBIF = 0;
-    }
+      }
 
-
+    return;
 }
 
 
@@ -2690,6 +2717,8 @@ void __attribute__((picinterrupt(("")))) inttimer0(void){
 void main(void) {
     confi();
     while(1){
+        division();
+        cont = PORTC;
     }
 
 }
@@ -2728,10 +2757,17 @@ void confi(void){
   IOCBbits.IOCB0 = 1;
   IOCBbits.IOCB1 = 1;
 
+  banderas = 0b00000000;
 
 
 
   TMR0 = 217;
   return;
 
+}
+int division(void){
+    CEN = cont/100;
+    res = cont%100;
+    DECE = res/10;
+    UNI = res%10;
 }
