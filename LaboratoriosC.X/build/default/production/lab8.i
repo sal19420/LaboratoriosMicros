@@ -1,4 +1,4 @@
-# 1 "lab7_1.c"
+# 1 "lab8.c"
 # 1 "<built-in>" 1
 # 1 "<built-in>" 3
 # 288 "<built-in>" 3
@@ -6,8 +6,14 @@
 # 1 "<built-in>" 2
 # 1 "C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\language_support.h" 1 3
 # 2 "<built-in>" 2
-# 1 "lab7_1.c" 2
-# 10 "lab7_1.c"
+# 1 "lab8.c" 2
+
+
+
+
+
+
+
 #pragma config FOSC = INTRC_NOCLKOUT
 #pragma config WDTE = OFF
 #pragma config PWRTE = ON
@@ -2507,7 +2513,7 @@ extern __bank0 unsigned char __resetbits;
 extern __bank0 __bit __powerdown;
 extern __bank0 __bit __timeout;
 # 28 "C:/Program Files/Microchip/MPLABX/v5.45/packs/Microchip/PIC16Fxxx_DFP/1.2.33/xc8\\pic\\include\\xc.h" 2 3
-# 28 "lab7_1.c" 2
+# 26 "lab8.c" 2
 
 # 1 "C:\\Program Files\\Microchip\\xc8\\v2.31\\pic\\include\\c90\\stdint.h" 1 3
 # 13 "C:\\Program Files\\Microchip\\xc8\\v2.31\\pic\\include\\c90\\stdint.h" 3
@@ -2642,7 +2648,7 @@ typedef int16_t intptr_t;
 
 
 typedef uint16_t uintptr_t;
-# 29 "lab7_1.c" 2
+# 27 "lab8.c" 2
 
 
 
@@ -2672,60 +2678,76 @@ void __attribute__((picinterrupt(("")))) ISR(void){
      PORTB = 0X00;
 
        if (banderas == 0b00000000){
-         PORTBbits.RB4 = 0;
-         PORTBbits.RB2 = 1;
+         PORTBbits.RB2 = 0;
+         PORTBbits.RB0 = 1;
          PORTD = (display[UNI]);
          banderas = 0b00000001;
         }
      else if (banderas == 0b00000001){
-         PORTBbits.RB2 = 0;
-         PORTBbits.RB3 = 1;
+         PORTBbits.RB0 = 0;
+         PORTBbits.RB1 = 1;
          PORTD = (display[DECE]);
          banderas = 0b00000010;
         }
      else if (banderas == 0b00000010){
-         PORTBbits.RB4 = 1;
-         PORTBbits.RB3 = 0;
+         PORTBbits.RB2 = 1;
+         PORTBbits.RB1 = 0;
          PORTD = (display[CEN]);
          banderas = 0b00000000;
             }
      TMR0 = 217;
      INTCONbits.T0IF = 0;
 
+    }
+    if (PIR1bits.ADIF){
+        if(ADCON0bits.CHS == 0){
+            PORTC = ADRESH;
         }
+        else{
+            cont = ADRESH;
+        }
+        PIR1bits.ADIF = 0;
+    }
 
-     if (RBIF == 1){
-        if (RB0 == 0){
-            PORTC++;
-        }
-        if (RB1 == 0){
-            PORTC-- ;
-        }
-        INTCONbits.RBIF = 0;
-      }
+
 
     return;
 }
 
-
-
-
 void main(void) {
     confi();
-    while(1){
+    ADCON0bits.GO = 1;
+
+    while(1)
+    {
         division();
-        cont = PORTC;
+        if(ADCON0bits.GO == 0){
+            if (ADCON0bits.CHS == 0){
+                ADCON0bits.CHS = 1;
+            }
+            else {
+                ADCON0bits.CHS = 0;
+
+            }
+            _delay((unsigned long)((200)*(8000000/4000000.0)));
+            ADCON0bits.GO = 1;
+
+        }
     }
 
+    return;
 }
+
 void confi(void){
-  ANSEL = 0X00;
+  ANSEL = 0b00000011;
   ANSELH = 0X00;
 
-  TRISB = 0X03;
+  TRISA = 0X03;
+  TRISB = 0X00;
   TRISC = 0X00;
   TRISD = 0X00;
 
+  PORTA = 0X00;
   PORTB = 0X00;
   PORTC = 0X00;
   PORTD = 0X00;
@@ -2741,27 +2763,37 @@ void confi(void){
   INTCONbits.T0IE = 1;
   INTCONbits.T0IF = 0;
 
+
   OPTION_REGbits.PSA = 0;
   OPTION_REGbits.T0CS = 0;
   OPTION_REGbits.PS2 = 1;
   OPTION_REGbits.PS1 = 1;
   OPTION_REGbits.PS0 = 1;
-
-  OPTION_REGbits.nRBPU = 0;
-  WPUBbits.WPUB0 = 1;
-  WPUBbits.WPUB1 = 1;
-  IOCBbits.IOCB0 = 1;
-  IOCBbits.IOCB1 = 1;
-
-  banderas = 0b00000000;
-
-
-
   TMR0 = 217;
-  return;
+
+
+  ADCON1bits.ADFM = 0;
+  ADCON1bits.VCFG0 = 0;
+  ADCON1bits.VCFG1 = 0;
+
+  ADCON0bits.ADCS = 1;
+  ADCON0bits.CHS = 0;
+  _delay((unsigned long)((200)*(8000000/4000000.0)));
+  ADCON0bits.ADON = 1;
+  _delay((unsigned long)((200)*(8000000/4000000.0)));
+
+
+
+  PIR1bits.ADIF = 0;
+  PIE1bits.ADIE = 1;
+  INTCONbits.PEIE = 1;
+  INTCONbits.GIE = 1;
+  INTCONbits.T0IE = 1;
+  INTCONbits.T0IF = 0;
+
+  banderas= 0X00;
 
 }
-
 int division(void){
     CEN = cont/100;
 
