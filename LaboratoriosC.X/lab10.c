@@ -1,8 +1,8 @@
 /*
- * File:   lab9.c
+ * File:   lab10.c
  * Author: Josue Salazar
  *
- * Created on 27 de abril de 2021, 12:31 PM
+ * Created on 4 de mayo de 2021, 11:31 PM
  */
 // CONFIG1
 #pragma config FOSC = INTRC_NOCLKOUT// Oscillator Selection bits (INTOSCIO oscillator: I/O function on RA6/OSC2/CLKOUT pin, I/O function on RA7/OSC1/CLKIN)
@@ -28,6 +28,9 @@
 
 #define _XTAL_FREQ 8000000 
 
+//variables
+const char DATA = 106;
+
 ///////Prototipos////////
 void confi(void);
 void ISR (void);
@@ -36,100 +39,66 @@ void ISR (void);
 /////Interrupcion///////////
 
 void __interrupt() ISR(void){
-    if (PIR1bits.ADIF){
-        if(ADCON0bits.CHS == 0){
-            CCPR1L = (ADRESH>>1)+125;
-        }
-        else{
-            CCPR2L = (ADRESH>>1)+125;
-        }
-        PIR1bits.ADIF = 0;
+    if (PIR1bits.RCIF){
+        PORTB = RCREG;
     }
     return;
 }
 
+//ciclo
 void main(void) {
     confi();
-    ADCON0bits.GO = 1;
     
-    while(1)
-    {
-    
-        if(ADCON0bits.GO == 0){
-            if (ADCON0bits.CHS == 0){
-                ADCON0bits.CHS = 1;
-            }
-            else {
-                ADCON0bits.CHS = 0;
-                
-            }
-            __delay_us(200);
-            ADCON0bits.GO = 1;
-        
+    while(1){
+        __delay_ms(500);
+        if (PIR1bits.TXIF){
+            TXREG = DATA;   
         }
     }
-    
     return;
 }
-
 void confi(void){
-  ANSEL = 0b00000011;
+  ANSEL = 0b00000000;
   ANSELH = 0X00;
   //Aqui configuramos entradas y salidas
-  TRISA = 0X03;
+  TRISA = 0X00;
+  TRISB = 0X00;
  
   
   PORTA = 0X00;
+  PORTB = 0X00;
  
   // colocamos nuestro oscilador interno en 8Mhz
   OSCCONbits.IRCF2 = 1;
   OSCCONbits.IRCF1 = 1;
   OSCCONbits.IRCF0 = 1; 
   OSCCONbits.SCS = 1;
-
-  //Configuracion del ADC
-  ADCON1bits.ADFM = 0;
-  ADCON1bits.VCFG0 = 0;
-  ADCON1bits.VCFG1 = 0;
-  
-  ADCON0bits.ADCS = 0b10;
-  ADCON0bits.CHS = 0;
-  __delay_us(200);
-  ADCON0bits.ADON = 1;
-  __delay_us(200);
-  
-  
-   // cinfuguracion de PWM
-  TRISCbits.TRISC2 = 1;
-  TRISCbits.TRISC1 = 1;
-  PR2 = 250;
-  CCP1CONbits.P1M = 0;
-  CCP2CONbits.CCP2M = 0b1100;
-  CCP1CONbits.CCP1M = 0b1100;
-  
-  CCPR1L = 0X0F;
-  CCPR2L = 0X0F;
-  CCP1CONbits.DC1B = 0;
-  CCP2CONbits.DC2B0 = 0;
-  CCP2CONbits.DC2B1 = 0;
- 
-  //Configuracion del TMR2
-  
-  PIR1bits.TMR2IF = 0;
-  T2CONbits.T2CKPS = 0b11;
-  T2CONbits.TMR2ON = 1;
-  
-  while(PIR1bits.TMR2IF == 0);
-  PIR1bits.TMR2IF = 0;
-  TRISCbits.TRISC2 = 0;
-  TRISCbits.TRISC1 = 0;
   
   //Configuracion de interrupciones
   PIR1bits.ADIF = 0;
   PIE1bits.ADIE = 1;
   INTCONbits.PEIE = 1;
   INTCONbits.GIE = 1;
+  PIE1bits.RCIE = 1;
+  PIR1bits.RCIF = 0;
+  
+  
+  // Configuracion de TX y RX
+  TXSTAbits.SYNC = 0;
+  TXSTAbits.BRGH = 1;
+  
+  BAUDCTLbits.BRG16 = 1;
+  
+  SPBRG = 207;
+  SPBRGH = 0;
+  
+  RCSTAbits.SPEN = 1;
+  RCSTAbits.RX9 = 0;
+  RCSTAbits.CREN = 1;
+  
+  TXSTAbits.TXEN = 1;
+  
+  
 
   return;
 }
-

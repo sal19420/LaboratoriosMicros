@@ -15,6 +15,8 @@
       <itemPath>lab7_1.c</itemPath>
       <itemPath>lab8.c</itemPath>
       <itemPath>lab9.c</itemPath>
+      <itemPath>lab10.c</itemPath>
+      <itemPath>pruebapablo.c</itemPath>
     </logicalFolder>
     <logicalFolder name="ExternalFiles"
                    displayName="Important Files"
@@ -634,6 +636,18 @@
         </XC8-config-global>
       </item>
       <item path="lab8.c" ex="true" overriding="false">
+        <HI-TECH-COMP>
+        </HI-TECH-COMP>
+        <HI-TECH-LINK>
+        </HI-TECH-LINK>
+        <XC8-CO>
+        </XC8-CO>
+        <XC8-config-global>
+        </XC8-config-global>
+      </item>
+      <item path="lab9.c" ex="true" overriding="false">
+      </item>
+      <item path="pruebapablo.c" ex="true" overriding="false">
       </item>
     </conf>
   </confs>
