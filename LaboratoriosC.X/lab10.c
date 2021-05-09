@@ -25,38 +25,79 @@
 
 #include <xc.h>
 #include <stdint.h>
+#include <stdio.h>
 
 #define _XTAL_FREQ 8000000 
 
-//variables
-const char DATA = 106;
+//variables ///////
 
 ///////Prototipos////////
 void confi(void);
-void ISR (void);
+void putch(char DATA); //Funcion especial para la comunicacion
+void texto(void);      // funcion de modos
 
-
-/////Interrupcion///////////
-
-void __interrupt() ISR(void){
-    if (PIR1bits.RCIF){
-        PORTB = RCREG;
-    }
-    return;
-}
 
 //ciclo
 void main(void) {
     confi();
     
     while(1){
-        __delay_ms(500);
-        if (PIR1bits.TXIF){
-            TXREG = DATA;   
-        }
+        texto();
     }
     return;
 }
+
+void putch(char DATA){
+    while (TXIF == 0);
+    TXREG = DATA; // guardar el dato de la comunicacion
+    return;
+    
+}
+
+void texto(void){
+    __delay_ms(250);// tiempo de despliegue de los modos
+    printf("\r Escoga una opcion: \r");
+     __delay_ms(250);
+    printf("\r 1. Desplegar cadena de caracteres: \r");
+     __delay_ms(250);
+    printf("\r 2. Desplegar PORTA: \r");
+     __delay_ms(250);
+    printf("\r 3. Desplegar PORTB: \r");
+     __delay_ms(250);
+    printf("\r 4. BONUS \r");
+    while(RCIF == 0);
+  
+    if (RCREG =='1'){ // Seleccion de modos por medio de caracteres en el teclado
+         __delay_ms(250);
+         printf("\r WAO SIENTO QUE ME GUSTA DEMASIAUUUU \r");
+         
+    }
+    if (RCREG == '2'){
+        printf("\r Insertar caracter para colocar en PORTA: \r");
+        while (RCIF == 0);
+        PORTA = RCREG;
+    }
+    
+    if (RCREG == '3'){
+        printf("\r Insertar caracter para colocar en PORTB: \r");
+        while (RCIF == 0);
+        PORTB = RCREG;
+    }
+     if (RCREG =='4'){
+         __delay_ms(250);
+         printf("\r Colocar wao en youtube \r");
+         
+    }
+    
+    else {
+        NULL; // si no es el caracter que se espera entones no hacer nada
+        
+    }
+        
+   return; 
+
+}
+
 void confi(void){
   ANSEL = 0b00000000;
   ANSELH = 0X00;
@@ -80,6 +121,8 @@ void confi(void){
   INTCONbits.PEIE = 1;
   INTCONbits.GIE = 1;
   PIE1bits.RCIE = 1;
+  PIE1bits.TXIE = 1;
+  PIR1bits.TXIF = 0;
   PIR1bits.RCIF = 0;
   
   
